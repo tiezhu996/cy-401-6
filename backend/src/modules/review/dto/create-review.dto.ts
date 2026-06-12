@@ -16,9 +16,11 @@ export class CreateReviewDto {
     @IsString()
     @IsOptional()
     @Transform(({ value }) => {
-        if (typeof value !== 'string') return undefined;
-        const trimmed = value.trim();
-        return trimmed.length > 0 ? trimmed : undefined;
+        if (typeof value === 'string') {
+            const trimmed = value.trim();
+            return trimmed.length > 0 ? trimmed : undefined;
+        }
+        return value;
     })
     comment?: string;
 }
