@@ -11,7 +11,7 @@
           <div class="rating-row">
             <el-rate :model-value="Number(profile.rating)" disabled />
             <span class="rating-text">{{ Number(profile.rating).toFixed(1) }}</span>
-            <span class="muted">{{ profile.reviewCount || 0 }} 条评价</span>
+            <span class="muted">{{ profile.reviewCount ?? 0 }} 条评价</span>
           </div>
         </el-card>
 
@@ -23,7 +23,7 @@
               <el-rate :model-value="Number(review.score)" disabled :size="'small'" />
               <span class="muted review-time">{{ formatTime(review.createdAt) }}</span>
             </div>
-            <p v-if="review.comment" class="review-comment">{{ review.comment }}</p>
+            <p v-if="review.comment != null && review.comment.length > 0" class="review-comment">{{ review.comment }}</p>
             <p v-if="review.contract?.contractNo" class="review-contract muted">
               合同：{{ review.contract.contractNo }}
             </p>

@@ -59,7 +59,7 @@
           <el-rate :model-value="Number(review.score)" disabled :size="'small'" />
           <span class="muted review-time">{{ formatTime(review.createdAt) }}</span>
         </div>
-        <p v-if="review.comment" class="review-comment">{{ review.comment }}</p>
+        <p v-if="review.comment != null && review.comment.length > 0" class="review-comment">{{ review.comment }}</p>
       </div>
     </el-card>
   </section>
@@ -111,12 +111,13 @@ async function submitReview() {
   if (!contract.value || !userStore.user) return;
   const isBuyer = contract.value.buyerId === userStore.user.id;
   const revieweeId = isBuyer ? contract.value.freelancerId : contract.value.buyerId;
+  const trimmedComment = reviewForm.comment.trim();
   try {
     await reviewStore.submitReview({
       contractId: contract.value.id,
       revieweeId,
       score: reviewForm.score,
-      comment: reviewForm.comment || undefined
+      comment: trimmedComment.length > 0 ? trimmedComment : undefined
     });
     ElMessage.success('评价提交成功');
     reviewForm.score = 0;

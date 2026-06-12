@@ -39,7 +39,7 @@ export class Review {
     score: number;
 
     @Column({ type: 'text', nullable: true })
-    comment: string;
+    comment: string | null;
 
     @CreateDateColumn()
     createdAt: Date;

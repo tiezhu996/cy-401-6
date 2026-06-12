@@ -58,7 +58,7 @@ export class ReviewService {
             revieweeId: dto.revieweeId,
             contractId: dto.contractId,
             score: dto.score,
-            comment: dto.comment || null
+            comment: dto.comment ?? null
         });
         const saved = await this.reviewRepository.save(review);
 

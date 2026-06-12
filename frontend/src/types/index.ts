@@ -14,7 +14,7 @@ export interface User {
   avatar?: string;
   skillTags?: string[];
   rating: number;
-  reviewCount: number;
+  reviewCount?: number;
   bio?: string;
   contact?: string;
 }
@@ -83,7 +83,7 @@ export interface Review {
   contractId: string;
   contract?: Contract;
   score: number;
-  comment?: string;
+  comment: string | null;
   createdAt?: string;
 }
 
