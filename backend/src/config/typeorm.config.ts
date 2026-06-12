@@ -2,6 +2,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Bid } from '../modules/bid/entity/bid.entity';
 import { Contract } from '../modules/contract/entity/contract.entity';
 import { Requirement } from '../modules/requirement/entity/requirement.entity';
+import { Review } from '../modules/review/entity/review.entity';
 import { User } from '../modules/user/entity/user.entity';
 import { OperationLog } from '../utils/operation-log.entity';
 
@@ -12,7 +13,7 @@ export const typeOrmConfig = (): TypeOrmModuleOptions => ({
   username: process.env.DB_USER || 'freelance',
   password: process.env.DB_PASSWORD || 'freelance_pwd',
   database: process.env.DB_NAME || 'freelance',
-  entities: [User, Requirement, Bid, Contract, OperationLog],
+  entities: [User, Requirement, Bid, Contract, Review, OperationLog],
   synchronize: process.env.TYPEORM_SYNC !== 'false',
   logging: process.env.TYPEORM_LOGGING === 'true',
   charset: 'utf8mb4'

@@ -37,6 +37,9 @@ export class User {
   @Column({ type: 'decimal', precision: 3, scale: 2, default: 5 })
   rating: number;
 
+  @Column({ type: 'int', default: 0 })
+  reviewCount: number;
+
   @Column({ type: 'text', nullable: true })
   bio?: string;
 

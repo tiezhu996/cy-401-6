@@ -8,7 +8,26 @@
           <div>
             <SkillTag v-for="skill in profile.skillTags || []" :key="skill" :skill="skill" />
           </div>
-          <el-rate :model-value="Number(profile.rating)" disabled />
+          <div class="rating-row">
+            <el-rate :model-value="Number(profile.rating)" disabled />
+            <span class="rating-text">{{ Number(profile.rating).toFixed(1) }}</span>
+            <span class="muted">{{ profile.reviewCount || 0 }} 条评价</span>
+          </div>
+        </el-card>
+
+        <el-card v-if="reviewStore.userReviews.length > 0" class="section" shadow="never">
+          <template #header>口碑评价</template>
+          <div v-for="review in reviewStore.userReviews" :key="review.id" class="review-item">
+            <div class="review-meta">
+              <UserAvatar :user="review.reviewer" :size="32" />
+              <el-rate :model-value="Number(review.score)" disabled :size="'small'" />
+              <span class="muted review-time">{{ formatTime(review.createdAt) }}</span>
+            </div>
+            <p v-if="review.comment" class="review-comment">{{ review.comment }}</p>
+            <p v-if="review.contract?.contractNo" class="review-contract muted">
+              合同：{{ review.contract.contractNo }}
+            </p>
+          </div>
         </el-card>
       </el-col>
       <el-col :xs="24" :lg="15">
@@ -62,6 +81,7 @@ import SkillTag from '@/components/common/SkillTag.vue';
 import UserAvatar from '@/components/common/UserAvatar.vue';
 import { useContractStore } from '@/stores/contract';
 import { useRequirementStore } from '@/stores/requirement';
+import { useReviewStore } from '@/stores/review';
 import { useUserStore } from '@/stores/user';
 import type { User } from '@/types';
 
@@ -69,6 +89,7 @@ const props = defineProps<{ id: string }>();
 const userStore = useUserStore();
 const requirementStore = useRequirementStore();
 const contractStore = useContractStore();
+const reviewStore = useReviewStore();
 const profile = ref<User | null>(null);
 const skillInput = ref('');
 const form = reactive({
@@ -89,11 +110,17 @@ async function save() {
   ElMessage.success('资料已保存');
 }
 
+function formatTime(val?: string) {
+  if (!val) return '';
+  return new Date(val).toLocaleString('zh-CN');
+}
+
 onMounted(async () => {
   const [user] = await Promise.all([
     userStore.fetchUser(props.id),
     requirementStore.fetchMine(),
-    contractStore.fetchMine()
+    contractStore.fetchMine(),
+    reviewStore.fetchByUser(props.id)
   ]);
   profile.value = user;
   form.username = user.username;
@@ -102,3 +129,49 @@ onMounted(async () => {
   skillInput.value = (user.skillTags || []).join(', ');
 });
 </script>
+
+<style scoped>
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rating-text {
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.review-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-time {
+  font-size: 12px;
+}
+
+.review-comment {
+  margin: 6px 0 0;
+  padding-left: 44px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.review-contract {
+  margin: 4px 0 0;
+  padding-left: 44px;
+  font-size: 12px;
+}
+</style>

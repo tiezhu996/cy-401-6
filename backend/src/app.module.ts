@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BidModule } from './modules/bid/bid.module';
 import { ContractModule } from './modules/contract/contract.module';
 import { RequirementModule } from './modules/requirement/requirement.module';
+import { ReviewModule } from './modules/review/review.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthMiddleware } from './common/middlewares/auth.middleware';
 import { RequestLoggerMiddleware } from './common/middlewares/request-logger.middleware';
@@ -21,7 +22,8 @@ import { RequestLoggerMiddleware } from './common/middlewares/request-logger.mid
     UserModule,
     RequirementModule,
     BidModule,
-    ContractModule
+    ContractModule,
+    ReviewModule
   ],
   controllers: [AppController]
 })

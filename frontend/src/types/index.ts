@@ -14,6 +14,7 @@ export interface User {
   avatar?: string;
   skillTags?: string[];
   rating: number;
+  reviewCount: number;
   bio?: string;
   contact?: string;
 }
@@ -69,6 +70,20 @@ export interface Contract {
   buyer?: User;
   freelancerId: string;
   freelancer?: User;
+  updatedAt?: string;
+  createdAt?: string;
+}
+
+export interface Review {
+  id: string;
+  reviewerId: string;
+  reviewer?: User;
+  revieweeId: string;
+  reviewee?: User;
+  contractId: string;
+  contract?: Contract;
+  score: number;
+  comment?: string;
   createdAt?: string;
 }
 
